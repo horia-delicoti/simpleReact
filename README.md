@@ -14,3 +14,6 @@ npm start
 ### References
 
 - [understanding JavaScript Engine](https://github.com/horia-delicoti/simpleReact/blob/master/notes/javascriptEngine.md)
+- [CodePen](https://codepen.io/)
+- [A re-introduction to JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript)
+- [BabelJS](https://babeljs.io/)
