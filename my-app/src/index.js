@@ -2,32 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-/** Passing a property from parent Board component to a child Square component:
+/* Passing a property from parent Board component to a child Square component:
  * - render() method returns a description of what to see on the screen; it returns a React element
  * - square's render method shows the value {this.props.value} passed from Board component
  *
+ * Function Components
+ * In React, function components are a simple way to write components that only contains a "render" method and
+ * don't have their own state. Instead of defining a class, we can write a function that takes "props" as input
+ * and return what should be rendered.
  */
-class Square extends React.Component {
-  /* Passing down two props from Board to Square: "value" and "onClick". The "onClick" prop is a function that Square
-   * can call when clicked.
-   *
-   * When a Square is clicked, the "onClick" function provided by the Board is called:
-   * 1) The "onClick" prop on the build-in DOM <button> component tells React to set up a click event listener.
-   * 2) When the button is clicked, React will call the "onClick" event handler that is defined in Square's render() met
-   * 3) This event handler calls "this.props.onClick()". The Square's "onClick" prop was specified by the Board
-   * 4) Since the Board passed "onClick={() => this.handleClick(i)}" to Square, the Square calls "this.handleClick(i) when clicked"
-   * 5)
-   */
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
+function Square(props) {
+  return (
+    <button className="square" onClick={props.onclick}>
+      {props.value}
+    </button>
+  );
 }
 
 class Board extends React.Component {
