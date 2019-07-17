@@ -13,7 +13,7 @@ import './index.css';
  */
 function Square(props) {
   return (
-    <button className="square" onClick={props.onclick}>
+    <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -34,7 +34,8 @@ class Board extends React.Component {
     *     '0', null, null  ]
     */
     this.state = {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      xIsNext: true // setting the first move to be "X" to be default by modifying the initial state
     }
   }
 
@@ -46,8 +47,12 @@ class Board extends React.Component {
      *  - replace the date with a new copy which has the desired changes
      */
     const squares = this.state.squares.slice(); // we call ".slice()" to create a copy of the "squares" array
-    squares[i] = 'X';
-    this.setState({squares: squares})
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      // Each time a players moves, "xIsNext" will be flipped to determine which player goes next and the game's state will be saved
+      xIsNext: !this.state.xIsNext,
+    });
   }
 
   renderSquare(i) {
@@ -65,7 +70,8 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    // Displaying the "status" text which player has the next turn
+    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
