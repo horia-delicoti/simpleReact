@@ -50,6 +50,12 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
+    /* Why immutability is important.
+     * We use ".slice()" method to create a copy of the squares array to modify instead of modifying the existing array.
+     * There are two approaches to change data:
+     *  - mutate the data by directly changing the data's values
+     *  - replace the date with a new copy which has the desired changes
+     */
     const squares = this.state.squares.slice(); // we call ".slice()" to create a copy of the "squares" array
     squares[i] = 'X';
     this.setState({squares: squares})
