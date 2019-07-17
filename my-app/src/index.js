@@ -8,31 +8,65 @@ import './index.css';
  *
  */
 class Square extends React.Component {
-  constructor(props) {
-    super(props); // always call "super" when defining the constructor of a subclass
-    this.state = {
-      value: null,
-    };
-  }
-
-  /* By calling "this.setState" from an "onClick" handler, we tell React to re-render that Square whenever its <button>
-  * is clicked. After the update, the Square's "this.state.value" will be 'X', so we'll see the "x" on the game board.
-  */
+  /* Passing down two props from Board to Square: "value" and "onClick". The "onClick" prop is a function that Square
+   * can call when clicked.
+   *
+   * When a Square is clicked, the "onClick" function provided by the Board is called:
+   * 1) The "onClick" prop on the build-in DOM <button> component tells React to set up a click event listener.
+   * 2) When the button is clicked, React will call the "onClick" event handler that is defined in Square's render() met
+   * 3) This event handler calls "this.props.onClick()". The Square's "onClick" prop was specified by the Board
+   * 4) Since the Board passed "onClick={() => this.handleClick(i)}" to Square, the Square calls "this.handleClick(i) when clicked"
+   * 5)
+   */
   render() {
     return (
       <button
         className="square"
-        onClick={() => this.setState({value: 'X'})}
+        onClick={() => this.props.onClick()}
       >
-        {this.state.value}
+        {this.props.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
+  /* We want to store the games's state in the parent Board component. The Board component can tell each Square what to
+  * display by passing a prop.
+  * The parent component can pass the state back down to the children by using "props".
+  * Adding the constructor to the Board and setting the Board's initial state to contain an array of 9 nulls
+  * corresponding to the 9 squares:
+  */
+  constructor(props) {
+    super(props);
+    /* When we fill the board in later, the "this.state.squares" array will look something like this:
+    * [   '0', null, 'X',
+    *     'X', 'X',  'X',
+    *     '0', null, null  ]
+    */
+    this.state = {
+      squares: Array(9).fill(null)
+    }
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice(); // we call ".slice()" to create a copy of the "squares" array
+    squares[i] = 'X';
+    this.setState({squares: squares})
+  }
+
   renderSquare(i) {
-    return <Square value={i}/>; // passing property "value" from Board component to Square component
+    /* Using the prop passing mechanism, modifying the Board to instruct each individual Square about its current
+     * value ('X', 'O', or null)
+     *
+     * We will pass down a function from the Board to the Square, and we will have Square call that function when a
+     * square is clicked.
+     * */
+    return <
+      Square
+      value={this.state.squares[i]}
+      onClick={() => this.handleClick(i)}
+    />;
   }
 
   render() {
