@@ -93,12 +93,13 @@ class Game extends React.Component {
       history: [{
         squares: Array(9).fill(null),
       }],
+      stepNumber: 0, // adding "stepNumber" to indicate which step we're currently viewing
       xIsNext: true,
     };
   }
 
   handleClick(i) {
-    const history = this.state.history;
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1]
     /* Why immutability is important.
      * We use ".slice()" method to create a copy of the squares array to modify instead of modifying the existing array.
@@ -117,12 +118,23 @@ class Game extends React.Component {
       }]),
       // Each time a players moves, "xIsNext" will be flipped to determine which player goes next and the game's state will be saved
       xIsNext: !this.state.xIsNext,
+      stepNumber: history.length,
+    });
+  }
+
+  /* Defining "jumpTo" method to update the "stepNumber". Chaging "xIsNext" to true if the number that we're changing
+  * "stepNumber" to is even.
+  * */
+  jumpTo(step) {
+    this.setState({
+      stepNumber: step,
+      xIsNext: (step % 2) === 0,
     });
   }
 
   render() {
     const history = this.state.history;
-    const current = history[history.length - 1];
+    const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares)
 
     /* We are recording the tic-tac-toe game's history, we can display it to the player as a list of past moves.
@@ -134,7 +146,7 @@ class Game extends React.Component {
         'Go to move #' + move:
         'Got to game start';
       return (
-        <li>
+        <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
         </li>
       );
