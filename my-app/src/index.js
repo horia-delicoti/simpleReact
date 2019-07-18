@@ -125,6 +125,21 @@ class Game extends React.Component {
     const current = history[history.length - 1];
     const winner = calculateWinner(current.squares)
 
+    /* We are recording the tic-tac-toe game's history, we can display it to the player as a list of past moves.
+    * "map()" method is used for mapping data to other data. We are mapping our history of moves to React elements
+    * representing buttons on the screen.
+    * */
+    const moves = history.map((step, move) => {
+      const desc = move ?
+        'Go to move #' + move:
+        'Got to game start';
+      return (
+        <li>
+          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+        </li>
+      );
+    });
+
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
@@ -142,7 +157,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
